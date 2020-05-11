@@ -41,13 +41,13 @@ def random_color_jitter_generator(
     """
 
     brightness_bound: torch.Tensor = _check_and_bound(
-        brightness, 'brightness', center=1., bounds=(0, 2))
+        brightness, 'brightness', center=1., bounds=(0, float('inf')))
 
     contrast_bound: torch.Tensor = _check_and_bound(
-        contrast, 'contrast', center=1.)
+        contrast, 'contrast', center=1., bounds=(0, float('inf')))
 
     saturation_bound: torch.Tensor = _check_and_bound(
-        saturation, 'saturation', center=1.)
+        saturation, 'saturation', center=1., bounds=(0, float('inf')))
 
     hue_bound: torch.Tensor = _check_and_bound(hue, 'hue', bounds=(-0.5, 0.5))
 

@@ -672,7 +672,7 @@ def apply_adjust_brightness(input: torch.Tensor, params: Dict[str, torch.Tensor]
     input = _transform_input(input)
     _validate_input_dtype(input, accepted_dtypes=[torch.float16, torch.float32, torch.float64])
 
-    transformed = adjust_brightness(input, params['brightness_factor'].to(input.dtype) - 1)
+    transformed = adjust_brightness(input, params['brightness_factor'].to(input.dtype))
 
     return transformed
 
