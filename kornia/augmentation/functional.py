@@ -66,10 +66,10 @@ def random_vflip(input: torch.Tensor, p: float = 0.5, return_transform: bool = F
         return output, compute_vflip_transformation(input, params)
     return output
 
-
+import random
 def color_jitter(input: torch.Tensor, brightness: FloatUnionType = 0.,
                  contrast: FloatUnionType = 0., saturation: FloatUnionType = 0.,
-                 hue: FloatUnionType = 0., return_transform: bool = False) -> UnionType:
+                 hue: FloatUnionType = 0., return_transform: bool = False, p: float=0.8) -> UnionType:
     r"""Generate params and apply operation on input tensor.
 
     See :func:`~kornia.augmentation.random_generator.random_color_jitter_generator` for details.
@@ -78,7 +78,11 @@ def color_jitter(input: torch.Tensor, brightness: FloatUnionType = 0.,
     input = _transform_input(input)
     batch_size, _, h, w = input.size()
     params = rg.random_color_jitter_generator(batch_size, brightness, contrast, saturation, hue)
-    output = apply_color_jitter(input, params)
+    rd_num = random.uniform(0, 1)
+    if rd_num < p:
+        output = apply_color_jitter(input, params)
+    else:
+        output = input
     if return_transform:
         return output, compute_intensity_transformation(input, params)
     return output

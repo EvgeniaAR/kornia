@@ -198,7 +198,7 @@ class ColorJitter(AugmentationBase):
 
     def __init__(
         self, brightness: FloatUnionType = 0., contrast: FloatUnionType = 0., saturation: FloatUnionType = 0.,
-        hue: FloatUnionType = 0., return_transform: bool = False, same_on_batch: bool = False
+        hue: FloatUnionType = 0., return_transform: bool = False, p: float = 0.5, same_on_batch: bool = False
     ) -> None:
         super(ColorJitter, self).__init__(return_transform)
         self.brightness: FloatUnionType = brightness
@@ -206,6 +206,7 @@ class ColorJitter(AugmentationBase):
         self.saturation: FloatUnionType = saturation
         self.hue: FloatUnionType = hue
         self.same_on_batch = same_on_batch
+        self.p = p
 
     def __repr__(self) -> str:
         repr = f"(brightness={self.brightness}, contrast={self.contrast}, saturation={self.saturation},\
@@ -214,7 +215,7 @@ class ColorJitter(AugmentationBase):
 
     def generate_parameters(self, batch_shape: torch.Size) -> Dict[str, torch.Tensor]:
         return rg.random_color_jitter_generator(
-            batch_shape[0], self.brightness, self.contrast, self.saturation, self.hue, self.same_on_batch)
+            batch_shape[0], self.brightness, self.contrast, self.saturation, self.hue, self.same_on_batch, self.p)
 
     def compute_transformation(self, input: torch.Tensor, params: Dict[str, torch.Tensor]) -> torch.Tensor:
         return F.compute_intensity_transformation(input, params)
